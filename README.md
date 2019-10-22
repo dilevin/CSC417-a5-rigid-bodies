@@ -122,11 +122,11 @@ Compute the rigid inertia matrix of a 3d object, represented by a surface mesh, 
 
 ### pick_nearest_vertices.cpp
 
-** Use your code from the previous assignments **
+**Use your code from the previous assignments**
 
 ### dV_spring_particle_particle_dq.cpp
 
-** Use your code from the previous assignments **
+**Use your code from the previous assignments**
 
 ### exponential_euler.h
 
