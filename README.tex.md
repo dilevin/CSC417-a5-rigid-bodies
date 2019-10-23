@@ -201,7 +201,9 @@ First, note that the lower-right block of $M_0$ is $\int_{\mbox{object}} \rho I 
 
 Second, let's consider the off-diagonal blocks, of the form $\int_{\mbox{object}} \rho \left[\mathbf{X}\right] d\mathbf{X}$ (or the transpose). Remember that each entry of $\left[\mathbf{X}\right]$  is just a component (either $X$, $Y$, $Z$) of $\mathbf{X}$. So the entries of this matrix are one of $X^* = \int_{\mbox{object}} \rho X dX$, $Y^* = \int_{\mbox{object}} \rho Y dY$, $Z^* = \int_{\mbox{object}} \rho Z dZ$ (or their negations). 
 
-What's interesting is that the vector $\begin{bmatrix} X^* & Y^* & Z^*\end{bmatrix}^T$ is the [center-of-mass](https://en.wikipedia.org/wiki/Center_of_mass) of the object. All this time I've been using $\mathbf{X}$ to represent a point in the undeformed space of a rigid body -- and I **never** chose the origin of the space (how naughty of me). Well, now I'm going to make a choice, one which will make my life a lot easier going forward. I'm going to choose the origin of the undeformed space to be **the center-of-mass**. This means that by definition   $\begin{bmatrix} X^* & Y^* & Z^*\end{bmatrix}^T=0$ so the off-diagonal blocks of $M_0$ become **zero**. 
+What's interesting is that the vector $\begin{bmatrix} X^* & Y^* & Z^*\end{bmatrix}^T$ is the [center-of-mass](https://en.wikipedia.org/wiki/Center_of_mass) of the object. All this time I've been using $\mathbf{X}$ to represent a point in the undeformed space of a rigid body -- and I **never** chose the origin of the space (how naughty of me). Well, now I'm going to make a choice, one which will make my life a lot easier going forward. I'm going to choose the origin of the undeformed space to be **the center-of-mass**. This means that by definition $\begin{bmatrix} X^* & Y^* & Z^*\end{bmatrix}^T=0$ so the off-diagonal blocks of $M_0$ become **zero**. 
+
+This choice of origin also gives our generalized coordinates and velocities more meaning. Our rotation and translation variables are really measuring rotation around, and translation of, the center-of-mass of our object. 
 
 After all this we get a drastically nicer version of $M_0$ which is 
 
@@ -239,7 +241,51 @@ Since rigid bodies don't deform, they don't store any potential energy. Consider
 
 ## The Equations of Motion
 
+The slightly funny form of the kinetic energy leads to a different set of equations of motion for rigid body simulations. These equations are called [Euler's equations of rigid motion](https://en.wikipedia.org/wiki/Euler%27s_equations_(rigid_body_dynamics). They are also the Euler-Lagrange equations for the Principle of Least Action, derived using our rotations and angular velocities as generalized coordinates and velocities. There is a very detailed write up of how this is done [here](http://www.math.ucsd.edu/~mleok/pdf/samplechap.pdf).
+
+As is the usual case we can form the Lagrangian $L = T-V$ where $V=0$ for rigid bodies. Initially it would seem to make sense to use our kinetic energy $T$ from above, which is parameterized by, $\omega$, the world space angular velocity. Sadly, this will make the derivation very difficult, and here's why. Recall that 
+
+$$\omega = R\Omega$$
+
+where $\Omega$ is the world space angular velocity. A small variation to $\omega$ can be constructed by varying $R$ and $\Omega$ together. This is tricky to account for. Rather than deal with things this way, its is easier to work, for a moment, using $\Omega$. Now our kinetic energy becomes
+
+$$T = \underbrace{\frac{1}{2}\Omega^T \mathcal{I} \Omega}_{T_0} + \frac{1}{2}\underbrace{\dot{\mathbf{p}} mI\dot{\mathbf{p}}}_{T_1}$$
+
+where $\mathcal{I}$ is the upper-left block of $M_0$. I've written it out like this because, for this decoupled system we can apply calculus of variations seperately for the rotational and linear parts. Thus we get two sets of equations of motion, one computed by setting $\delta T_0 = 0$ and the other computed by setting $\delta T_1 = 0$. The second equation uses standard, linear velocities and is handled as usual, leading to 
+
+$$ mI\ddot{\mathbf{p}} = \mathbf{f}_ext$$
+
+Here I've added an external forcing term and we observe that the center-of-mass of the rigid body behaves exactly like a regular particle in 3d. 
+
+The rotational component is a little bit tricker because we need to compute $\delta T_0 = \frac{\partial T_0}{\partial \Omega}\delta \Omega$. Much like our previous rotational time derivative, $\delta \Omega$ must take into account the special structure of the Orthogonal Group. Suppressing all the details, this leads to an extra term in the final equations of motion, known as the *Quadratic Velocity Vector*. This gives us the equations of motion for the rotational variables as 
+
+$$ \mathcal{I}\dot{\Omega} = \Omega\times\left(\mathcal{I}\Omega\right)+\mathcal{\tau}_{ext}$$
+
+where $\mathcal{\tau}_{ext}$ is an external torque applied to the system. This is equivalent to to 
+
+$$ R\mathcal{I}R^T\dot{\omega} = \omega\times\left(R\mathcal{I}R^T\omega\right)+\tau_{ext} $$
+
+where $\tau_{ext}$ becomes the world space external torque.
+
+Now all that remains is to integrate our center-of-mass and angular acceleration equations to produce rigid body motion.
+
 ## Time Integration of Rotating Objects
+
+Because we have no elastic forces to worry about, we can get away with simpler, explicit time integration (**at least for rigid objects that aren't spinning too quickly**). As such we will apply an explicit Euler type scheme that works in the following way. Like symplectic Euler, we will first compute new velocities for our objects, and then update their positions. For the center-of-mass (particle) equation, this is done using [symplectic Euler](https://github.com/dilevin/CSC2549-a1-mass-spring-1d), exactly!
+
+To update our angular velocities we can proceed as normal, by which I mean replacing our accelerations with standard first order finite differences. Why is this ok for angular accelerations and velocities ? Because these terms act in relation to the tangent space of our Lie Group. The tangent space is a locally flat space (like Euclidean space) and so we can (for a brief moment) ignore all the difficulties rotations and their orthogonality constraint introduce. This means the first step of our integrator solves
+
+$$ \left(R\mathcal{I}R^T\right)^t\omega^{t+1} = \left(R\mathcal{I}R^T\right)^t\omega^{t} +\Delta t \left(\omega^t\times\left(\left(R\mathcal{I}R^T\right)^t\omega\right)\right)+\tau_{ext} $$
+
+This is an explicit integration step, we evaluate all the positional variables and forces at the current time step. 
+
+The final tricky part is to update our rotation matrix. Now all the complications return. We can't just add our new angular velocity to the exiting rotation matrix. Recall from our initial discussion of rotations that the angular velocity equation is $\dot{\mathbf{x}} = \left[\omega^{t+1}\right]\mathbf{x}$. If $\omega$ is constant, this is a linear ordinary differential equation and can be solved with (you guessed it) the matrix exponential, yielding
+
+$\mathbf{x}\left(t+\Delta t\right) = \mbox{expm}\left([\omega^{t+1}\Delta t]\right)\mathbf{x}^t = \mbox{expm}\left([\omega^{t+1}\Delta t]\right)R^t\mathbf{X}^t$
+
+which gives us the updated rotation matrix $R^{t+1} = \mbox{expm}\left([\omega^{t+1}\Delta t]\right)R^t$. 
+
+It's this set of update equations you will use to implement rigid body dynamics in this assignment.
 
 ## Assignment Implementation
 
