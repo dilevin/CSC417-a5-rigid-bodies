@@ -241,7 +241,7 @@ Since rigid bodies don't deform, they don't store any potential energy. Consider
 
 ## The Equations of Motion
 
-The slightly funny form of the kinetic energy leads to a different set of equations of motion for rigid body simulations. These equations are called [Euler's equations of rigid motion](https://en.wikipedia.org/wiki/Euler%27s_equations_(rigid_body_dynamics). They are also the Euler-Lagrange equations for the Principle of Least Action, derived using our rotations and angular velocities as generalized coordinates and velocities. There is a very detailed write up of how this is done [here](http://www.math.ucsd.edu/~mleok/pdf/samplechap.pdf).
+The slightly funny form of the kinetic energy leads to a different set of equations of motion for rigid body simulations. These equations are called [Euler's equations of rigid motion](https://en.wikipedia.org/wiki/Euler%27s_equations_(rigid_body_dynamics)). They are also the Euler-Lagrange equations for the Principle of Least Action, derived using our rotations and angular velocities as generalized coordinates and velocities. There is a very detailed write up of how this is done [here](http://www.math.ucsd.edu/~mleok/pdf/samplechap.pdf).
 
 As is the usual case we can form the Lagrangian $L = T-V$ where $V=0$ for rigid bodies. Initially it would seem to make sense to use our kinetic energy $T$ from above, which is parameterized by, $\omega$, the world space angular velocity. Sadly, this will make the derivation very difficult, and here's why. Recall that 
 
