@@ -48,7 +48,7 @@ inline void simulate(Eigen::VectorXd &q, Eigen::VectorXd &qdot, double dt, doubl
     unsigned int irb = 0;
     for(unsigned int pickedi = 0; pickedi < Visualize::picked_vertices().size(); pickedi++) {   
         Eigen::Matrix3d R = Eigen::Map<const Eigen::Matrix3d>(q.segment<9>(12*irb).data());
-        Eigen::Vector3d p = Eigen::Map<const Eigen::Vector3d>(q.segment<9>(12*irb + 9).data());
+        Eigen::Vector3d p = Eigen::Map<const Eigen::Vector3d>(q.segment<3>(12*irb + 9).data());
 
         mouse = Visualize::geometry(irb).row(Visualize::picked_vertices()[pickedi]).transpose() + Visualize::mouse_drag_world() + Eigen::Vector3d::Constant(1e-6);
         dV_spring_particle_particle_dq(dV_mouse, mouse, Visualize::geometry(irb).row(Visualize::picked_vertices()[pickedi]).transpose(), 0.0, (Visualize::is_mouse_dragging() ? k_selected : 0.));
