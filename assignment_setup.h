@@ -31,7 +31,7 @@ Eigen::SparseMatrixd N;
 double density = 1.0;
 
 //selection spring
-double k_selected = 1e-6;
+double k_selected = 1;
 
 //some forces for the rigid bodies
 Eigen::VectorXd forces; 
@@ -44,6 +44,8 @@ inline void simulate(Eigen::VectorXd &q, Eigen::VectorXd &qdot, double dt, doubl
     Eigen::Vector3d mouse;
     Eigen::Vector6d dV_mouse;
     Eigen::Matrix36d rb_jacobian;
+
+    forces.setZero();
 
     unsigned int irb = 0;
     for(unsigned int pickedi = 0; pickedi < Visualize::picked_vertices().size(); pickedi++) {   
