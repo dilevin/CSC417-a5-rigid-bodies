@@ -215,7 +215,7 @@ One way you could compute the remaining integrals (upper left block and mass) wo
 
 ### Surface-Only Integration
 
-The method we will use for integration was popularized Brian Mirtich [here](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.56.127&rep=rep1&type=pdf). It uses the [divergence theorem](https://en.wikipedia.org/wiki/Divergence_theorem) to convert volume integrators into surface integrals and thus allows there evaluation using a surface, rather than a volumetric discretization.  The basic idea is to rephrase integrals of the type 
+The method we will use for integration was popularized Brian Mirtich [here](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.56.127&rep=rep1&type=pdf). It uses the [divergence theorem](https://en.wikipedia.org/wiki/Divergence_theorem) to convert volume integrals into surface integrals and thus allows there evaluation using a surface, rather than a volumetric discretization.  The basic idea is to rephrase integrals of the type 
 
 <p align="center"><img src="/tex/742003e74795c9e67e99a0f790a9da95.svg?invert_in_darkmode&sanitize=true" align=middle width=129.0581556pt height=37.3519608pt/></p>
 
