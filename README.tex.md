@@ -147,7 +147,7 @@ where the scalar, $\alpha$ controls the magnitude of the perturbation. Since thi
 
 What remains is to deal with $\mbox{expm}$. To do this we are going to replace the exponential operator with its infinite series. This let's us concoct the following:
 
-$$ \left(R + \Delta R\right)\mathbf{X} = \left(I + \left[\mathbf{r}\right]+\alpha\left[\Delta\mathbf{r}\right] + \left(\left[\mathbf{r}\right]+\alpha\left[\Delta\mathbf{r}\right]\right)\left(\left[\mathbf{r}\right]+\alpha\left[\Delta\mathbf{r}\right]\right)\cdots\right)\mathbf{X} $$
+$$ \left(R + \Delta R\right)\mathbf{X} = \left(I + \left[\mathbf{r}\right]+\alpha\left[\Delta\mathbf{r}\right] + \frac{1}{2}\left(\left[\mathbf{r}\right]+\alpha\left[\Delta\mathbf{r}\right]\right)\left(\left[\mathbf{r}\right]+\alpha\left[\Delta\mathbf{r}\right]\right)\cdots\right)\mathbf{X} $$
 
 Now we are going to compute $\frac{d R}{d\alpha} = \lim_{\alpha\rightarrow 0}\frac{\partial R + \Delta R}{\partial \alpha}$. This is called a [differential](https://en.wikipedia.org/wiki/Differential_of_a_function) and it represents a directional derivative, the change in a function if you move in a particular direction. In this case our direction is $\left[\Delta\mathbf{r}\right]$. The differential is really doing two things at once. The first is computing the directional derivative around some point $\left[\mathbf{r}\right]+\alpha\left[\Delta\mathbf{r}\right]$, while the second is using the limit to "move" the point at which the derivative is evaluated back to $\left[\mathbf{r}\right]$. **NOTE:** this limit is incredibly helpful. It means we can ignore any terms in the above equation that are functions of $\alpha$, since it will become zero. 
 
