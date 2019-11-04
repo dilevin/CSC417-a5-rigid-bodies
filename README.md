@@ -275,7 +275,7 @@ Because we have no elastic forces to worry about, we can get away with simpler, 
 
 To update our angular velocities we can proceed as normal, by which I mean replacing our accelerations with standard first order finite differences. Why is this ok for angular accelerations and velocities ? Because these terms act in relation to the tangent space of our Lie Group. The tangent space is a locally flat space (like Euclidean space) and so we can (for a brief moment) ignore all the difficulties rotations and their orthogonality constraint introduce. This means the first step of our integrator solves
 
-<p align="center"><img src="/tex/356929cde315b6584cefff58144aed0c.svg?invert_in_darkmode&sanitize=true" align=middle width=454.97148015pt height=29.58934275pt/></p>
+<p align="center"><img src="/tex/4a0d826807c4c310394424a4c85566cf.svg?invert_in_darkmode&sanitize=true" align=middle width=455.79338144999997pt height=29.58934275pt/></p>
 
 This is an explicit integration step, we evaluate all the positional variables and forces at the current time step. 
 
