@@ -275,7 +275,7 @@ Because we have no elastic forces to worry about, we can get away with simpler, 
 
 To update our angular velocities we can proceed as normal, by which I mean replacing our accelerations with standard first order finite differences. Why is this ok for angular accelerations and velocities ? Because these terms act in relation to the tangent space of our Lie Group. The tangent space is a locally flat space (like Euclidean space) and so we can (for a brief moment) ignore all the difficulties rotations and their orthogonality constraint introduce. This means the first step of our integrator solves
 
-$$ \left(R\mathcal{I}R^T\right)^t\omega^{t+1} = \left(R\mathcal{I}R^T\right)^t\omega^{t} +\Delta t \left(\omega^t\times\left(\left(R\mathcal{I}R^T\right)^t\omega\right)\right)+\tau_{ext} $$
+$$ \left(R\mathcal{I}R^T\right)^t\omega^{t+1} = \left(R\mathcal{I}R^T\right)^t\omega^{t} +\Delta t \left(\omega^t\times\left(\left(R\mathcal{I}R^T\right)^t\omega\right)+\tau_{ext}\right) $$
 
 This is an explicit integration step, we evaluate all the positional variables and forces at the current time step. 
 
