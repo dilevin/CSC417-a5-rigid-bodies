@@ -147,7 +147,7 @@ where the scalar, $\alpha$ controls the magnitude of the perturbation. Since thi
 
 What remains is to deal with $\mbox{expm}$. To do this we are going to replace the exponential operator with its infinite series. This let's us concoct the following:
 
-$$ \left(R + \Delta R\right)\mathbf{X} = \left(I + \left[\mathbf{r}\right]+\alpha\left[\Delta\mathbf{r}\right] + \left(\left[\mathbf{r}\right]+\alpha\left[\Delta\mathbf{r}\right]\right)\left(\left[\mathbf{r}\right]+\alpha\left[\Delta\mathbf{r}\right]\right)\cdots\right)\mathbf{X} $$
+$$ \left(R + \Delta R\right)\mathbf{X} = \left(I + \left[\mathbf{r}\right]+\alpha\left[\Delta\mathbf{r}\right] + \frac{1}{2}\left(\left[\mathbf{r}\right]+\alpha\left[\Delta\mathbf{r}\right]\right)\left(\left[\mathbf{r}\right]+\alpha\left[\Delta\mathbf{r}\right]\right)\cdots\right)\mathbf{X} $$
 
 Now we are going to compute $\frac{d R}{d\alpha} = \lim_{\alpha\rightarrow 0}\frac{\partial R + \Delta R}{\partial \alpha}$. This is called a [differential](https://en.wikipedia.org/wiki/Differential_of_a_function) and it represents a directional derivative, the change in a function if you move in a particular direction. In this case our direction is $\left[\Delta\mathbf{r}\right]$. The differential is really doing two things at once. The first is computing the directional derivative around some point $\left[\mathbf{r}\right]+\alpha\left[\Delta\mathbf{r}\right]$, while the second is using the limit to "move" the point at which the derivative is evaluated back to $\left[\mathbf{r}\right]$. **NOTE:** this limit is incredibly helpful. It means we can ignore any terms in the above equation that are functions of $\alpha$, since it will become zero. 
 
@@ -201,7 +201,7 @@ First, note that the lower-right block of $M_0$ is $\int_{\mbox{object}} \rho I 
 
 Second, let's consider the off-diagonal blocks, of the form $\int_{\mbox{object}} \rho \left[\mathbf{X}\right] d\mathbf{X}$ (or the transpose). Remember that each entry of $\left[\mathbf{X}\right]$  is just a component (either $X$, $Y$, $Z$) of $\mathbf{X}$. So the entries of this matrix are one of $X^* = \int_{\mbox{object}} \rho X dX$, $Y^* = \int_{\mbox{object}} \rho Y dY$, $Z^* = \int_{\mbox{object}} \rho Z dZ$ (or their negations). 
 
-What's interesting is that the vector $\begin{bmatrix} X^* & Y^* & Z^*\end{bmatrix}^T$ is the [center-of-mass](https://en.wikipedia.org/wiki/Center_of_mass) of the object. All this time I've been using $\mathbf{X}$ to represent a point in the undeformed space of a rigid body -- and I **never** chose the origin of the space (how naughty of me). Well, now I'm going to make a choice, one which will make my life a lot easier going forward. I'm going to choose the origin of the undeformed space to be **the center-of-mass**. This means that by definition $\begin{bmatrix} X^* & Y^* & Z^*\end{bmatrix}^T=0$ so the off-diagonal blocks of $M_0$ become **zero**. 
+What's interesting is that the vector $\frac{1}{m}\begin{bmatrix} X^* & Y^* & Z^*\end{bmatrix}^T$ is the [center-of-mass](https://en.wikipedia.org/wiki/Center_of_mass) of the object. All this time I've been using $\mathbf{X}$ to represent a point in the undeformed space of a rigid body -- and I **never** chose the origin of the space (how naughty of me). Well, now I'm going to make a choice, one which will make my life a lot easier going forward. I'm going to choose the origin of the undeformed space to be **the center-of-mass**. This means that by definition $\frac{1}{m}\begin{bmatrix} X^* & Y^* & Z^*\end{bmatrix}^T=0$. Because $m$ is greater than zero by definition, the off-diagonal blocks of $M_0$ become **zero**. 
 
 This choice of origin also gives our generalized coordinates and velocities more meaning. Our rotation and translation variables are really measuring rotation around, and translation of, the center-of-mass of our object. 
 
@@ -215,7 +215,7 @@ One way you could compute the remaining integrals (upper left block and mass) wo
 
 ### Surface-Only Integration
 
-The method we will use for integration was popularized Brian Mirtich [here](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.56.127&rep=rep1&type=pdf). It uses the [divergence theorem](https://en.wikipedia.org/wiki/Divergence_theorem) to convert volume integrators into surface integrals and thus allows there evaluation using a surface, rather than a volumetric discretization.  The basic idea is to rephrase integrals of the type 
+The method we will use for integration was popularized Brian Mirtich [here](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.56.127&rep=rep1&type=pdf). It uses the [divergence theorem](https://en.wikipedia.org/wiki/Divergence_theorem) to convert volume integrals into surface integrals and thus allows there evaluation using a surface, rather than a volumetric discretization.  The basic idea is to rephrase integrals of the type 
 
 $$\int_{\mbox{volume}} f\left(\mathbf{X}\right) d\mathbf{X}$$
 
@@ -275,7 +275,7 @@ Because we have no elastic forces to worry about, we can get away with simpler, 
 
 To update our angular velocities we can proceed as normal, by which I mean replacing our accelerations with standard first order finite differences. Why is this ok for angular accelerations and velocities ? Because these terms act in relation to the tangent space of our Lie Group. The tangent space is a locally flat space (like Euclidean space) and so we can (for a brief moment) ignore all the difficulties rotations and their orthogonality constraint introduce. This means the first step of our integrator solves
 
-$$ \left(R\mathcal{I}R^T\right)^t\omega^{t+1} = \left(R\mathcal{I}R^T\right)^t\omega^{t} +\Delta t \left(\omega^t\times\left(\left(R\mathcal{I}R^T\right)^t\omega\right)\right)+\tau_{ext} $$
+$$ \left(R\mathcal{I}R^T\right)^t\omega^{t+1} = \left(R\mathcal{I}R^T\right)^t\omega^{t} +\Delta t \left(\omega^t\times\left(\left(R\mathcal{I}R^T\right)^t\omega\right)+\tau_{ext}\right) $$
 
 This is an explicit integration step, we evaluate all the positional variables and forces at the current time step. 
 
