@@ -181,6 +181,7 @@ inline void assignment_setup(int argc, char **argv, Eigen::VectorXd &q, Eigen::V
     for(unsigned int irb=0; irb < geometry.size(); ++irb) {
         inertia_matrix(inertia, com, mass, geometry[irb].first, geometry[irb].second, density);
         
+        mass_matrix.setZero();
         mass_matrix.block(0,0,3,3) = inertia;
         mass_matrix(3,3) = mass;
         mass_matrix(4,4) = mass;
