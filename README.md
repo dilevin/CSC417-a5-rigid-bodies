@@ -1,3 +1,5 @@
+[![](https://github.com/dilevin/CSC2549-a5-rigid-bodies/workflows/Build-CSC2549-Assignment-Five/badge.svg)](https://github.com/dilevin/CSC2549-a5-rigid-bodies/actions)
+
 ## Introduction
 
 For this assignment, we leave the realm of deformable objects altogether, instead focusing on objects that do not deform at all. Such rigid body models gain some simplicity via the avoidance of potential energy functions but this is somewhat offset by more complicated generalized coordinates.  
